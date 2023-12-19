@@ -165,14 +165,15 @@ export default {
       if ((typeof result === 'object' || typeof result === 'function') && typeof result.then === 'function') {
         result.then(r => {
           this.localPagination = this.showPagination && Object.assign({}, this.localPagination, {
-            current: r.pageNo, // 返回结果中的当前分页数
-            total: r.totalCount, // 返回结果中的总记录数
+            current: this.pageNum, // 返回结果中的当前分页数
+            total: r && r.total || 0, // 返回结果中的总记录数
             showSizeChanger: this.showSizeChanger,
             pageSize: (pagination && pagination.pageSize) ||
               this.localPagination.pageSize
           }) || false
+          if (!r) return
           // 为防止删除数据后导致页面当前页面数据长度为 0 ,自动翻页到上一页
-          if (r.data.length === 0 && this.showPagination && this.localPagination.current > 1) {
+          if (r.items.length === 0 && this.showPagination && this.localPagination.current > 1) {
             this.localPagination.current--
             this.loadData()
             return
@@ -187,7 +188,7 @@ export default {
           } catch (e) {
             this.localPagination = false
           }
-          this.localDataSource = r.data // 返回结果中的数组数据
+          this.localDataSource = r.items // 返回结果中的数组数据
         })
         .finally(() => {
           this.localLoading = false

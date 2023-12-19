@@ -93,3 +93,50 @@ export function scorePassword (pass) {
 
   return parseInt(score)
 }
+
+export function parseTime (time, cFormat, isMill) {
+  if (arguments.length === 0 || !time) {
+    return null
+  }
+  const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
+  let date
+  if (typeof time === 'object') {
+    date = time
+  } else {
+    if ((typeof time === 'string')) {
+      if ((/^[0-9]+$/.test(time))) {
+        // support "1548221490638"
+        time = parseInt(time)
+      } else if (/^(?=.Safari)(?!.Chrome)/.test(navigator.userAgent)) {
+        // support safari
+        // https://stackoverflow.com/questions/4310953/invalid-date-in-safari
+        time = time.replace(new RegExp(/-/gm), '/')
+      }
+      // else {} // 2020-10-21T15:12:46.250714+08:00
+    }
+
+    if ((typeof time === 'number') && (time.toString().length === 10)) {
+      time = time * 1000
+    }
+    date = new Date(time)
+  }
+  const formatObj = {
+    y: date.getFullYear(),
+    m: date.getMonth() + 1,
+    d: date.getDate(),
+    h: date.getHours(),
+    i: date.getMinutes(),
+    s: date.getSeconds(),
+    a: date.getDay()
+  }
+  const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
+    const value = formatObj[key]
+    // Note: getDay() returns 0 on Sunday
+  if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value] }
+    return value.toString().padStart(2, '0')
+  })
+  if (isMill) {
+    if (date.getMilliseconds() > 0) return `${time_str}.${date.getMilliseconds().toString().padEnd(3, '0')}`
+  }
+  return time_str
+}

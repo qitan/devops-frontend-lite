@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { getPermissions } from '@/api/manage'
+// import { getPermissions } from '@/api/manage'
 import pick from 'lodash.pick'
 
 export default {
@@ -119,7 +119,7 @@ export default {
     },
     loadPermissions () {
       const that = this
-      getPermissions().then(res => {
+      this.$http.getPermissions().then(res => {
         const result = res.result
         that.permissions = result.map(permission => {
           const options = JSON.parse(permission.actionData) || []

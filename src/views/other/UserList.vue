@@ -164,7 +164,7 @@
 <script>
 import pick from 'lodash.pick'
 import { STable } from '@/components'
-import { getRoleList, getServiceList } from '@/api/manage'
+// import { getRoleList, getServiceList } from '@/api/manage'
 import { PERMISSION_ENUM } from '@/core/permission/permission'
 
 const STATUS = {
@@ -228,7 +228,7 @@ export default {
       columns,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        return getRoleList(parameter)
+        return this.$http.getRoleList(parameter)
           .then(res => {
             console.log('getRoleList', res)
             // 展开全部行
@@ -252,11 +252,11 @@ export default {
     }
   },
   created () {
-    getServiceList().then(res => {
+    this.$http.getServiceList().then(res => {
       console.log('getServiceList.call()', res)
     })
 
-    getRoleList().then(res => {
+    this.$http.getRoleList().then(res => {
       console.log('getRoleList.call()', res)
     })
   },

@@ -117,7 +117,7 @@
 <script>
 import moment from 'moment'
 import { STable } from '@/components'
-import { getRoleList, getServiceList } from '@/api/manage'
+// import { getRoleList, getServiceList } from '@/api/manage'
 
 export default {
   name: 'TableList',
@@ -172,7 +172,7 @@ export default {
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
         console.log('loadData.parameter', parameter)
-        return getServiceList(Object.assign(parameter, this.queryParam))
+        return this.$http.getServiceList(Object.assign(parameter, this.queryParam))
           .then(res => {
             return res.result
           })
@@ -193,7 +193,7 @@ export default {
   },
   created () {
     this.tableOption()
-    getRoleList({ t: new Date() })
+    this.$http.getRoleList({ t: new Date() })
   },
   methods: {
     tableOption () {

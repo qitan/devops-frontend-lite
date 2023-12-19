@@ -9,13 +9,13 @@
         <div class="top">
           <div class="header">
             <a href="/">
-              <img src="~@/assets/logo.svg" class="logo" alt="logo">
-              <span class="title">Ant Design</span>
+              <!-- <img src="~@/assets/logo.png" class="logo" alt="logo"> -->
+              <span class="title">爱猫家运维平台</span>
             </a>
           </div>
-          <div class="desc">
+          <!-- <div class="desc">
             {{ $t('layouts.userLayout.title') }}
-          </div>
+          </div> -->
         </div>
 
         <router-view />
@@ -27,7 +27,7 @@
             <a href="_self">条款</a>
           </div>
           <div class="copyright">
-            Copyright &copy; 2018 vueComponent
+            Copyright &copy; 2023 爱猫家
           </div>
         </div>
       </div>

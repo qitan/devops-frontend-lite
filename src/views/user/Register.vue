@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { getSmsCaptcha } from '@/api/login'
+// import { getSmsCaptcha } from '@/api/login'
 import { deviceMixin } from '@/store/device-mixin'
 import { scorePassword } from '@/utils/util'
 
@@ -233,7 +233,7 @@ export default {
 
             const hide = $message.loading('验证码发送中..', 0)
 
-            getSmsCaptcha({ mobile: values.mobile }).then(res => {
+            this.$http.getSmsCaptcha({ mobile: values.mobile }).then(res => {
               setTimeout(hide, 2500)
               $notification['success']({
                 message: '提示',

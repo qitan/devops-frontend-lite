@@ -1,5 +1,6 @@
 import Vue from 'vue'
-import store from '@/store'
+import permission from '../permission/permission'
+// import store from '@/store'
 
 /**
  * Action 权限指令
@@ -14,21 +15,36 @@ import store from '@/store'
  *
  *  @see https://github.com/vueComponent/ant-design-vue-pro/pull/53
  */
-const action = Vue.directive('action', {
-  inserted: function (el, binding, vnode) {
-    const actionName = binding.arg
-    const roles = store.getters.roles
-    const elVal = vnode.context.$route.meta.permission
-    const permissionId = Object.prototype.toString.call(elVal) === '[object String]' && [elVal] || elVal
-    roles.permissions.forEach(p => {
-      if (!permissionId.includes(p.permissionId)) {
-        return
-      }
-      if (p.actionList && !p.actionList.includes(actionName)) {
-        el.parentNode && el.parentNode.removeChild(el) || (el.style.display = 'none')
-      }
-    })
-  }
-})
+// const action = Vue.directive('action', {
+//   inserted: function (el, binding, vnode) {
+//     const actionName = binding.arg
+//     const roles = store.getters.roles
+//     console.log('从store获取roles', roles)
+//     const permissions = store.getters.perms
+//     console.log('从store获取perms', permissions)
+//     const elVal = vnode.context.$route.meta.permission
+//     const permissionId = Object.prototype.toString.call(elVal) === '[object String]' && [elVal] || elVal
+//     roles.permissions.forEach(p => {
+//       if (!permissionId.includes(p.permissionId)) {
+//         return
+//       }
+//       if (p.actionList && !p.actionList.includes(actionName)) {
+//         el.parentNode && el.parentNode.removeChild(el) || (el.style.display = 'none')
+//       }
+//     })
+//   }
+// })
 
-export default action
+// export default action
+
+const install = function (Vue) {
+  Vue.directive('action', permission)
+}
+
+if (window.Vue) {
+  window['action'] = permission
+  Vue.use(install); // eslint-disable-line
+}
+
+permission.install = install
+export default permission

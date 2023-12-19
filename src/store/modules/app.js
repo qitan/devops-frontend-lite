@@ -29,7 +29,7 @@ const app = {
     color: '',
     weak: false,
     multiTab: true,
-    lang: 'en-US',
+    lang: 'zh-CN', // 'en-US',
     _antLocale: {}
   },
   mutations: {

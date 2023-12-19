@@ -9,7 +9,7 @@
           <div class="content-title">
             {{ timeFix }}，{{ user.name }}<span class="welcome-text">，{{ welcome }}</span>
           </div>
-          <div>前端工程师 | 蚂蚁金服 - 某某某事业群 - VUE平台</div>
+          <div>爱猫家运维平台</div>
         </div>
       </div>
     </template>
@@ -137,7 +137,7 @@ import { mapState } from 'vuex'
 import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import { Radar } from '@/components'
 
-import { getRoleList, getServiceList } from '@/api/manage'
+// import { getRoleList, getServiceList } from '@/api/manage'
 
 const DataSet = require('@antv/data-set')
 
@@ -207,7 +207,7 @@ export default {
     }),
     currentUser () {
       return {
-        name: 'Serati Ma',
+        name: 'Admin',
         avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
       }
     },
@@ -219,19 +219,19 @@ export default {
     this.user = this.userInfo
     this.avatar = this.userInfo.avatar
 
-    getRoleList().then(res => {
+    this.$http.getRoleList().then(res => {
       // console.log('workplace -> call getRoleList()', res)
     })
 
-    getServiceList().then(res => {
-      // console.log('workplace -> call getServiceList()', res)
-    })
+    // this.$http.getServiceList().then(res => {
+    //   // console.log('workplace -> call getServiceList()', res)
+    // })
   },
   mounted () {
-    this.getProjects()
-    this.getActivity()
-    this.getTeams()
-    this.initRadar()
+    // this.getProjects()
+    // this.getActivity()
+    // this.getTeams()
+    // this.initRadar()
   },
   methods: {
     getProjects () {

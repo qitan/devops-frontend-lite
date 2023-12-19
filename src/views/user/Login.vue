@@ -10,6 +10,7 @@
       <a-tabs
         :activeKey="customActiveKey"
         :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
+        style="margin-top: 30px;"
         @change="handleTabClick"
       >
         <a-tab-pane key="tab1" :tab="$t('user.login.tab-login-credentials')">
@@ -41,7 +42,7 @@
             </a-input-password>
           </a-form-item>
         </a-tab-pane>
-        <a-tab-pane key="tab2" :tab="$t('user.login.tab-login-mobile')">
+        <!-- <a-tab-pane key="tab2" :tab="$t('user.login.tab-login-mobile')">
           <a-form-item>
             <a-input size="large" type="text" :placeholder="$t('user.login.mobile.placeholder')" v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: $t('user.login.mobile.placeholder') }], validateTrigger: 'change'}]">
               <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
@@ -66,16 +67,16 @@
               ></a-button>
             </a-col>
           </a-row>
-        </a-tab-pane>
+        </a-tab-pane> -->
       </a-tabs>
 
       <a-form-item>
         <a-checkbox v-decorator="['rememberMe', { valuePropName: 'checked' }]">{{ $t('user.login.remember-me') }}</a-checkbox>
-        <router-link
+        <!-- <router-link
           :to="{ name: 'recover', params: { user: 'aaa'} }"
           class="forge-password"
           style="float: right;"
-        >{{ $t('user.login.forgot-password') }}</router-link>
+        >{{ $t('user.login.forgot-password') }}</router-link> -->
       </a-form-item>
 
       <a-form-item style="margin-top:24px">
@@ -89,7 +90,7 @@
         >{{ $t('user.login.login') }}</a-button>
       </a-form-item>
 
-      <div class="user-login-other">
+      <!-- <div class="user-login-other">
         <span>{{ $t('user.login.sign-in-with') }}</span>
         <a>
           <a-icon class="item-icon" type="alipay-circle"></a-icon>
@@ -101,15 +102,15 @@
           <a-icon class="item-icon" type="weibo-circle"></a-icon>
         </a>
         <router-link class="register" :to="{ name: 'register' }">{{ $t('user.login.signup') }}</router-link>
-      </div>
+      </div> -->
     </a-form>
 
-    <two-step-captcha
+    <!-- <two-step-captcha
       v-if="requiredTwoStepCaptcha"
       :visible="stepCaptchaVisible"
       @success="stepCaptchaSuccess"
       @cancel="stepCaptchaCancel"
-    ></two-step-captcha>
+    ></two-step-captcha> -->
   </div>
 </template>
 
@@ -118,7 +119,7 @@ import md5 from 'md5'
 import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
-import { getSmsCaptcha, get2step } from '@/api/login'
+// import { getSmsCaptcha } from '@/api/login'
 
 export default {
   components: {
@@ -144,13 +145,13 @@ export default {
     }
   },
   created () {
-    get2step({ })
-      .then(res => {
-        this.requiredTwoStepCaptcha = res.result.stepCode
-      })
-      .catch(() => {
-        this.requiredTwoStepCaptcha = false
-      })
+    // get2step({ })
+    //   .then(res => {
+    //     this.requiredTwoStepCaptcha = res.result.stepCode
+    //   })
+    //   .catch(() => {
+    //     this.requiredTwoStepCaptcha = false
+    //   })
     // this.requiredTwoStepCaptcha = true
   },
   methods: {
@@ -192,8 +193,11 @@ export default {
           loginParams.password = md5(values.password)
           Login(loginParams)
             .then((res) => this.loginSuccess(res))
-            .catch(err => this.requestFailed(err))
-            .finally(() => {
+            .catch(err => {
+              this.requestFailed(err)
+            })
+            .finally((err) => {
+              console.log('err: ', err)
               state.loginBtn = false
             })
         } else {
@@ -220,7 +224,7 @@ export default {
           }, 1000)
 
           const hide = this.$message.loading('验证码发送中..', 0)
-          getSmsCaptcha({ mobile: values.mobile }).then(res => {
+          this.$http.getSmsCaptcha({ mobile: values.mobile }).then(res => {
             setTimeout(hide, 2500)
             this.$notification['success']({
               message: '提示',
@@ -247,7 +251,7 @@ export default {
       })
     },
     loginSuccess (res) {
-      console.log(res)
+      console.log('登录成功', res)
       // check res.homePage define, set $router.push name res.homePage
       // Why not enter onComplete
       /*
